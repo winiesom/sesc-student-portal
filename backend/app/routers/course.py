@@ -23,6 +23,11 @@ def get_courses_main(db: Session = Depends(get_db)):
 
 @router.post("/main", status_code=status.HTTP_201_CREATED, response_model=schemas.Course)
 async def add_course(course: schemas.CourseCreate, db: Session = Depends(get_db)):
+
+    find_title = db.query(models.Course).filter(models.Course.title == course.title).first()
+
+    if find_title:
+                raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=f"Course Already Exists")
     
     new_course = models.Course(**course.dict())
     
@@ -39,7 +44,7 @@ async def get_course(id: int, db: Session = Depends(get_db)):
     course = db.query(models.Course).filter(models.Course.id == id).first()
 
     if not course:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with id: {id} was not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"course with id: {id} was not found")
     return course
 
 
