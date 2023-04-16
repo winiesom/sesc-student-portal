@@ -4,12 +4,9 @@ import api from "../api/api";
 
 const register = (signupData) => api.post("students", signupData);
 
-const login = (email, password) =>
+const login = (loginData) =>
   api
-    .post("login", {
-      email,
-      password,
-    })
+    .post("login", loginData)
     .then((response) => {
       if (response.data) {
         Cookies.set("access", response.data["access-token"]);

@@ -1,6 +1,6 @@
 from fastapi import status, Response, HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
 
 from .. import models, schemas, oauth2
 from ..database import get_db
@@ -80,9 +80,8 @@ async def update_course(id: int, updated_course: schemas.CourseCreate, db: Sessi
 # requires student to login before serving all courses
 
 @router.get("/", response_model=List[schemas.Course])
-def get_courses(db: Session = Depends(get_db), current_student: int = Depends(oauth2.get_current_user)):
-    print(current_student.email)
-    courses = db.query(models.Course).all()
+def get_courses(db: Session = Depends(get_db), current_student: int = Depends(oauth2.get_current_user), pagesize: int = 10, page: int = 0, search: Optional[str] = ""):
+    courses = db.query(models.Course).filter(models.Course.title.ilike(f'%{search.lower()}%')).limit(pagesize).offset(page).all()
     return courses
 
 

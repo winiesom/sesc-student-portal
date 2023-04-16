@@ -4,12 +4,12 @@ import AuthService from "../services/auth.service";
 
 export const register = createAsyncThunk(
   "auth/register",
-  async ({ signupData }, thunkAPI) => {
+  async (signupData, thunkAPI) => {
     try {
       const response = await AuthService.register(signupData);
       return response.data;
     } catch (error) {
-      let message = (error.response && error.response) || error.message;
+      let message = error.response.data.detail || error.response.statusText;
       
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue();
@@ -20,12 +20,15 @@ export const register = createAsyncThunk(
 
 export const login = createAsyncThunk(
   "auth/login",
-  async ({ email, password }, thunkAPI) => {
+  async (loginData, thunkAPI) => {
+    console.log(loginData, "slices")
     try {
-      const data = await AuthService.login(email, password);
+      const data = await AuthService.login(loginData);
+      console.log(data, 'slices data')
       return { user: data };
     } catch (error) {
-      let message = (error.response && error.response) || error.message;
+      console.log(error, 'slice error')
+      let message
       
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue();
@@ -34,13 +37,13 @@ export const login = createAsyncThunk(
 );
 
 
-export const logout = createAsyncThunk("auth/logout", async ({}, thunkAPI) => {
+export const logout = createAsyncThunk("auth/logout", async (thunkAPI) => {
   try {
     const response = await AuthService.logout();
     return response.data;
   } catch (error) {
-    const message =
-      (error.response && error.response) || error.message;
+    let message = error.response.data.detail || error.response.statusText;
+
     thunkAPI.dispatch(setMessage(message));
     return thunkAPI.rejectWithValue();
   }
@@ -56,23 +59,23 @@ const initialState = {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  extraReducers: {
-    [login.fulfilled]: (state, action) => {
+  extraReducers: (builder) => {
+    builder.addCase(login.fulfilled, (state, action) => {
       state.isLoggedIn = true;
       state.user = action.payload.user;
-    },
-    [login.rejected]: (state, action) => {
+    });
+    builder.addCase(login.rejected, (state, action) => {
       state.isLoggedIn = false;
       state.user = null;
-    },
-    [logout.fulfilled]: (state, action) => {
+    });
+    builder.addCase(logout.fulfilled, (state, action) => {
       state.isLoggedIn = false;
       state.user = null;
-    },
-    [logout.rejected]: (state, action) => {
+    });
+    builder.addCase(logout.rejected, (state, action) => {
       state.isLoggedIn = false;
       state.user = null;
-    },
+    });
   },
 });
 

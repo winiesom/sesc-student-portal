@@ -1,34 +1,33 @@
 from fastapi import FastAPI
-import psycopg2
-from psycopg2.extras import RealDictCursor
-import time
+from fastapi.middleware.cors import CORSMiddleware
 
 from . import models
 from .database import engine
-from .routers import course, student, auth
+from .routers import course, student, auth, enrolment
+from .config import settings
+
 
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-while True:
 
-    try:
-        conn = psycopg2.connect(host='localhost', database='student', user='postgres', password='password123', cursor_factory=RealDictCursor)
-        cursor = conn.cursor()
-        print("Database connection was successful")
-        break
-    except Exception as error:
-        print("Connecting to database failed")
-        print("Error: ", error)
-        time.sleep(2)
+origins = ["*"]
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 app.include_router(course.router)
 app.include_router(student.router)
 app.include_router(auth.router)
+app.include_router(enrolment.router)
 
 
 

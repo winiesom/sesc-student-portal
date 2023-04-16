@@ -1,6 +1,6 @@
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 
 
 class CourseBase(BaseModel):
@@ -21,12 +21,22 @@ class Course(CourseBase):
 
 
 class StudentCreate(BaseModel):
+    first_name: str
+    last_name: str
     username: str
     email: EmailStr
     password: str
 
+class StudentUpdate(BaseModel):
+    first_name: str
+    last_name: str
+    username: str
+    email: EmailStr
+
 class StudentOut(BaseModel):
     id: int
+    first_name: str
+    last_name: str
     username: str
     email: EmailStr
     student_id: str
@@ -46,3 +56,22 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     id: Optional[str] = None
+
+
+
+class EnrolmentBase(BaseModel):
+    student_id: int
+    course_id: int
+
+class EnrolmentCreate(EnrolmentBase):
+    pass
+
+
+class Enrolment(EnrolmentBase):
+    id: int
+    created_at: datetime
+    student_id: int
+    course: Course
+
+    class Config:
+        orm_mode = True

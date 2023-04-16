@@ -24,11 +24,14 @@ def create_access_token(data: dict):
     return encoded_jwt
 
 
+# decode jwt, extract the id. 
+# if no id throw an error.
+# validate with the schema and return the token data
 def verify_access_token(token: str, credentials_exception):
 
     try:
         
-        payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         id: str = payload.get("student_id")
         
         if id is None:
@@ -42,6 +45,8 @@ def verify_access_token(token: str, credentials_exception):
     return token_data
 
 
+# once verify_access_token returns token data: id
+# get_current_user function fetches student from db and returns the student
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(database.get_db)):
     credentials_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=f"Could not validate credentials", headers={"WWW-Authenticate": "Bearer"})
 

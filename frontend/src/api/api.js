@@ -1,5 +1,5 @@
 import axios from "axios";
-import TokenService from "../services/token.service";
+import { tokenService } from "../services/token.service";
 
 const instance = axios.create({
   withCredentials: true,
@@ -11,7 +11,7 @@ const instance = axios.create({
 });
 instance.interceptors.request.use(
   (config) => {
-    const token = TokenService.getAccessToken();
+    const token = tokenService.getAccessToken();
     if (token) {
       config.headers["Authorization"] = "Bearer " + token;
     }
