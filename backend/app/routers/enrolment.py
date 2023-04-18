@@ -21,8 +21,11 @@ def get_enrolments(db: Session = Depends(get_db), current_student: int = Depends
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.Enrolment)
 async def add_enrolment(enrolment: schemas.EnrolmentCreate, db: Session = Depends(get_db), current_student: int = Depends(oauth2.get_current_user)):
 
-    find_enrolment = db.query(models.Enrolment).filter(models.Enrolment.course_id == enrolment.course_id).first()
+    course = db.query(models.Course).filter(models.Course.id == enrolment.course_id).first()
+    if not course:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Course Not Found")
 
+    find_enrolment = db.query(models.Enrolment).filter(models.Enrolment.course_id == enrolment.course_id).first()
     if find_enrolment:
         raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=f"You Have Already Enrolled For This Course")
     

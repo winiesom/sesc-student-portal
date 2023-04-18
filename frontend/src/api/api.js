@@ -1,13 +1,11 @@
 import axios from "axios";
 import { tokenService } from "../services/token.service";
 
+
 const instance = axios.create({
   withCredentials: true,
   baseURL: "http://localhost:8000/",
   timeout: 15000,
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 instance.interceptors.request.use(
   (config) => {
@@ -15,6 +13,13 @@ instance.interceptors.request.use(
     if (token) {
       config.headers["Authorization"] = "Bearer " + token;
     }
+
+    if (config.url === "login") {
+      config.headers["Content-Type"] = "application/x-www-form-urlencoded";
+    } else {
+      config.headers["Content-Type"] = "application/json";
+    }
+    
     return config;
   },
   (error) => {

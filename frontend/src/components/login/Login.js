@@ -45,28 +45,29 @@ const Login = () => {
     const onSubmit = (data) => {
       const { email, password } = data;
       setLoading(true);
-
+    
       const loginData = {
         username: email,
-        password
+        password,
       };
-      console.log(loginData, "inputdata");
-
+    
       dispatch(login(loginData))
-      .then((data) => {
-        setLoading(false);
-        if(data.payload !== undefined) {
-          navigate("/dashboard")
-        }
-      })
-      .catch(() => {
-        setLoading(false);
-      });
-          setTimeout(() => {
-            dispatch(clearMessage());
-          }, 3000);
-    return false;
-    }
+        .then((data) => {
+          setLoading(false);
+          if (data.payload !== undefined) {
+            navigate('/dashboard');
+          }
+        })
+        .catch(() => {
+          setLoading(false);
+        });
+    
+      setTimeout(() => {
+        dispatch(clearMessage());
+      }, 3000);
+      return false;
+    };
+    
 
 
   return (

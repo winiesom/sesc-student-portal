@@ -1,6 +1,8 @@
 from fastapi import status, HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
 
+from typing import List
+
 from .. import models, schemas, utils, oauth2
 from ..database import get_db
 
@@ -38,18 +40,20 @@ async def create_student(student: schemas.StudentCreate, db: Session = Depends(g
     return new_student
 
 
-# @router.get("/{id}", response_model=schemas.StudentOut)
-# async def get_student(id: int, db: Session = Depends(get_db)):
-#     student = db.query(models.Student).filter(models.Student.id == id).first()
-
-#     if not student:
-#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Student with id: {id} does not exist")
-
-#     return student
-
-
 # endpoint with authentication
 # requires student to login before updating their profile
+
+@router.get("/{id}", response_model=List[schemas.StudentOut])
+async def get_student(id: int, db: Session = Depends(get_db), current_student: int = Depends(oauth2.get_current_user)):
+
+    student = db.query(models.Student).filter(models.Student.id == current_student.id ).all()
+
+    if not student:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Student with id: {id} does not exist")
+
+    return student
+
+
 
 @router.put("/{id}", response_model=schemas.StudentOut)
 async def update_student(id: int, updated_student: schemas.StudentUpdate, db: Session = Depends(get_db), current_student: int = Depends(oauth2.get_current_user)):

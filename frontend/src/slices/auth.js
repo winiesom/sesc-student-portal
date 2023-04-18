@@ -21,14 +21,11 @@ export const register = createAsyncThunk(
 export const login = createAsyncThunk(
   "auth/login",
   async (loginData, thunkAPI) => {
-    console.log(loginData, "slices")
     try {
       const data = await AuthService.login(loginData);
-      console.log(data, 'slices data')
       return { user: data };
     } catch (error) {
-      console.log(error, 'slice error')
-      let message
+      let message = error.response.data.detail || error.response.statusText;
       
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue();

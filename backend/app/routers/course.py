@@ -81,7 +81,9 @@ async def update_course(id: int, updated_course: schemas.CourseCreate, db: Sessi
 
 @router.get("/", response_model=List[schemas.Course])
 def get_courses(db: Session = Depends(get_db), current_student: int = Depends(oauth2.get_current_user), pagesize: int = 10, page: int = 0, search: Optional[str] = ""):
+    
     courses = db.query(models.Course).filter(models.Course.title.ilike(f'%{search.lower()}%')).limit(pagesize).offset(page).all()
+
     return courses
 
 

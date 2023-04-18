@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.8"
 
 services:
     
@@ -9,9 +9,9 @@ services:
         ports:
             - 5432:5432
         environment:
-            - POSTGRES_USER=${DB_USER}
-            - POSTGRES_PASSWORD=${DB_PASSWORD}
-            - POSTGRES_DB=${DB_NAME}
+            - POSTGRES_USER=${DATABASE_USERNAME}
+            - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+            - POSTGRES_DB=${DATABASE_NAME}
         
     pgadmin:
         container_name: pgadmin
@@ -31,7 +31,7 @@ services:
         ports:
             - 8000:8000
         volumes:
-            - .:/home
+            - .:/app
         depends_on:
             - db
         restart: always
