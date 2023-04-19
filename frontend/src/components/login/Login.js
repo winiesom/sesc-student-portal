@@ -55,7 +55,7 @@ const Login = () => {
         .then((data) => {
           setLoading(false);
           if (data.payload !== undefined) {
-            navigate('/dashboard');
+            navigate('/home/courses');
           }
         })
         .catch(() => {

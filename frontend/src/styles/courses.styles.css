@@ -1,0 +1,9 @@
+.courses-layout {
+    border: 1px solid red !important;
+    
+}
+
+.courses-box {
+    flex-grow: 10px !important;
+    padding: 30px !important;
+}
