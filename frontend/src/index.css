@@ -5,6 +5,23 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+}
+ /* Works on Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #cccccc;
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 0px;
+}
+
+
+*::-webkit-scrollbar-thumb {
+  background-color: #cccccc;
+  border-radius: 20px;
 }
 
 code {

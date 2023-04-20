@@ -45,6 +45,7 @@ const Login = () => {
     const onSubmit = (data) => {
       const { email, password } = data;
       setLoading(true);
+      
     
       const loginData = {
         username: email,
@@ -52,6 +53,7 @@ const Login = () => {
       };
     
       dispatch(login(loginData))
+      // console.log('haha')
         .then((data) => {
           setLoading(false);
           if (data.payload !== undefined) {
@@ -71,7 +73,7 @@ const Login = () => {
 
 
   return (
-    <div className="main-container">
+    <div className="login-container">
     <Snackbars
       variant="error"
       message={message}

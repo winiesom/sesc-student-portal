@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Routes, Route, Link, Navigate } from 'react-router-dom';
+import Cookies from "js-cookie";
 import { styled, useTheme } from '@mui/material/styles';
 import {
   List,
@@ -26,6 +27,8 @@ import {
   FactCheck as FactCheckIcon,
   Logout as LogoutIcon
 } from '@mui/icons-material';
+
+import {useSelector, useDispatch} from 'react-redux';
 
 import Courses from '../pages/Courses';
 import Enrolments from '../pages/Enrolments';
@@ -107,8 +110,18 @@ const pages = ['Courses', 'Enrolments', 'Eligibility', 'Profile'];
 
 
 const Layout = () => {
+  const accessToken = Cookies.get("access");
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const { user } = useSelector((state) => state.auth);
+  const { isLoggedIn } = useSelector((state) => state.auth);
+  useEffect(() => {
+    if (!isLoggedIn) return Navigate("/");
+    if (!(accessToken)) return Navigate("/");
+  }, [accessToken, isLoggedIn]);
 
   const handleDrawerOpen = () => {
     setOpen(true);

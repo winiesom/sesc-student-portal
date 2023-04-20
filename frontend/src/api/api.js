@@ -1,5 +1,5 @@
 import axios from "axios";
-import { tokenService } from "../services/token.service";
+import {tokenService} from "../services/token.service";
 
 
 const instance = axios.create({
@@ -11,9 +11,8 @@ instance.interceptors.request.use(
   (config) => {
     const token = tokenService.getAccessToken();
     if (token) {
-      config.headers["Authorization"] = "Bearer " + token;
+      config.headers["Authorization"] = token;
     }
-
     if (config.url === "login") {
       config.headers["Content-Type"] = "application/x-www-form-urlencoded";
     } else {
@@ -37,7 +36,7 @@ instance.interceptors.response.use(
       // Access Token was expired
       if (err.response.status === 401 && !originalConfig._retry) {
         try {
-            window.location.href = "/login";
+            window.location.href = "/";
         } catch (_error) {
           return Promise.reject(_error);
         }

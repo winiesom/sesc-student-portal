@@ -9,7 +9,7 @@ const login = (loginData) =>
     .post("login", loginData)
     .then((response) => {
       if (response.data) {
-        Cookies.set("access", response.data["access-token"]);
+        Cookies.set("access_token", response.data["access_token"]);
       }
       return response.data;
     });
@@ -18,7 +18,7 @@ const login = (loginData) =>
 const logout = () =>
   api.post("logout", {}).then((response) => {
     if (response.data) {
-      Cookies.remove("access");
+      Cookies.remove("access_token");
     }
     return response.data;
   });

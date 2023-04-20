@@ -19,6 +19,11 @@ class Course(CourseBase):
     class Config:
         orm_mode = True
 
+class CourseList(BaseModel):
+    courses: List[Course]
+    total_count: int
+    page: int
+
 
 class StudentCreate(BaseModel):
     first_name: str
@@ -53,6 +58,7 @@ class StudentLogin(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str
+    user_id: int
 
 class TokenData(BaseModel):
     id: Optional[str] = None

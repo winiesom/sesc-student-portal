@@ -1,11 +1,18 @@
-import Cookies from "js-cookie";
+import Cookies from 'js-cookie';
 
-class TokenService {
-  getAccessToken() {
-    return Cookies.get("access");
+// const setAccessToken = (token) => {
+//   Cookies.set('access_token', token, { expires: 7 });
+// };
+
+const getAccessToken = () => {
+  const token = Cookies.get('access_token');
+  if (token) {
+    return `Bearer ${token}`;
   }
-}
+  return null;
+};
 
-const tokenService = new TokenService();
-
-export { tokenService };
+export const tokenService = {
+  // setAccessToken,
+  getAccessToken,
+};

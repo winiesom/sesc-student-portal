@@ -1,9 +1,17 @@
-.courses-layout {
-    border: 1px solid red !important;
-    
+.course-search {
+    width: 100%;
+    margin-bottom: 20px;
+    height: 35px;
+    padding-left: 10px;
+    border: 1px solid #662D91;
+    border-radius: 4px;
+    outline: #662D91;
+    float: right;
+    background: rgba(107, 71, 134, 0.144);
 }
 
-.courses-box {
-    flex-grow: 10px !important;
-    padding: 30px !important;
+.course-search:focus {
+    border: 2px solid #662D91;
 }
+
+
