@@ -162,9 +162,9 @@ const Enrol = ({allowEnrol, row}) => {
             >
               {loading ? (
                 <ThreeDots color="#2e3192" height={15} width={30} />
-              ) : (
-                "Enrol"
-              )}
+              ) : 
+                enrolledState ? "Enrolled" : "Enrol"
+              }
             </CustomButton>
           </Grid>
         </Grid>

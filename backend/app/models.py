@@ -8,10 +8,10 @@ from random import randint
 from .database import Base
 
 
-def generate_student_id(n):
-    range_start = 10**(n-1)
-    range_end = (10**n)-1
-    return randint(range_start, range_end)
+# def generate_student_id(n):
+#     range_start = 10**(n-1)
+#     range_end = (10**n)-1
+#     return randint(range_start, range_end)
     
 
 
@@ -39,20 +39,21 @@ class Student(Base):
 
 
     # Custom validator that converts empty strings to None
-    @validates("first_name", "last_name", "username", "email", "password")
+    @validates("first_name", "last_name", "username", "email", "password", "student_id")
     def validate_not_empty(self, key, value):
         if isinstance(value, str) and value.strip() == '':
             return None
         return value
 
 
-    def __init__(self, first_name, last_name, username, email, password):
+    def __init__(self, first_name, last_name, username, email, password, student_id):
         self.first_name = first_name
         self.last_name = last_name
         self.username = username
         self.email = email
         self.password = password
-        self.student_id = "c" + str(generate_student_id(9))
+        # self.student_id = "c" + str(generate_student_id(9))
+        self.student_id = student_id
 
 
 class Enrolment(Base):

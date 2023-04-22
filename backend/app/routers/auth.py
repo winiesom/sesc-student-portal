@@ -19,5 +19,5 @@ async def login(student_credentials: OAuth2PasswordRequestForm = Depends(), db: 
 
     # create token, return token
     access_token = oauth2.create_access_token(data = {"student_id": student.id})
-    return {"access_token": access_token, "token_type": "bearer", "user_id": student.id}
+    return {"access_token": access_token, "token_type": "bearer", "user_id": student.id, "first_name": student.first_name, "last_name": student.last_name}
     

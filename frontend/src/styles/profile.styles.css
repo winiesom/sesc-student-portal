@@ -1,0 +1,18 @@
+.profile-paper {
+    padding: 40px !important;
+    padding-bottom: 10px !important;
+    width: 500px;
+}
+
+.edit-fab{
+    color: #fff !important; 
+    background: #662D91 !important;
+}
+.edit-fab:hover {
+    background: rgba(102, 45, 145, 0.76) !important;
+}
+
+.edit-profile-form{
+    height: 35px !important;
+    margin-bottom: 25px !important;
+}

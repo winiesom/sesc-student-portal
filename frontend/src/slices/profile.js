@@ -4,7 +4,7 @@ import ProfileService from "../services/profile.services";
 
 export const profile = createAsyncThunk(
   "profile/get",
-  async ({ id }, thunkAPI) => {
+  async (id, thunkAPI) => {
     try {
       const response = await ProfileService.getProfile(id);
       return response.data;
@@ -19,7 +19,8 @@ export const profile = createAsyncThunk(
 
 export const updateProfile = createAsyncThunk(
     "profile/edit",
-    async ({ id, profileData }, thunkAPI) => {
+    async (id, profileData, thunkAPI) => {
+      console.log(id, profileData, 'slices')
       try {
         const response = await ProfileService.editProfile(id, profileData);
         return response.data;

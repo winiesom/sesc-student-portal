@@ -31,6 +31,7 @@ class StudentCreate(BaseModel):
     username: str
     email: EmailStr
     password: str
+    student_id: str
 
 class StudentUpdate(BaseModel):
     first_name: str
@@ -59,6 +60,8 @@ class Token(BaseModel):
     access_token: str
     token_type: str
     user_id: int
+    first_name: str
+    last_name: str
 
 class TokenData(BaseModel):
     id: Optional[str] = None

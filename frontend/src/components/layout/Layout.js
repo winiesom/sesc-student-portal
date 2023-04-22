@@ -28,7 +28,7 @@ import {
   Logout as LogoutIcon
 } from '@mui/icons-material';
 
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 
 import Courses from '../pages/Courses';
 import Enrolments from '../pages/Enrolments';
@@ -36,6 +36,7 @@ import Eligibility from '../pages/Eligibility';
 import Profile from '../pages/Profile';
 
 import { Colors } from "../../assets/themes/colors"
+import "../../styles/common.styles.css"
 
 const drawerWidth = 240;
 
@@ -113,10 +114,8 @@ const Layout = () => {
   const accessToken = Cookies.get("access");
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-
-  const dispatch = useDispatch();
-
   const { user } = useSelector((state) => state.auth);
+
   const { isLoggedIn } = useSelector((state) => state.auth);
   useEffect(() => {
     if (!isLoggedIn) return Navigate("/");
@@ -150,8 +149,8 @@ const Layout = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Mini variant drawer
+          <Typography variant="h6" noWrap component="div" className="user-greeting">
+          Welcome {user && user.first_name + " " + user.last_name}
           </Typography>
         </Toolbar>
       </AppBar>

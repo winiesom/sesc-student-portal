@@ -32,7 +32,7 @@ async def create_student(student: schemas.StudentCreate, db: Session = Depends(g
         raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=f"Email Already Exists")
 
     #check if fields are empty
-    if not student.first_name or not student.last_name or not student.username or not student.email or not student.password:
+    if not student.first_name or not student.last_name or not student.username or not student.email or not student.password or not student.student_id:
         raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail="fields cannot be empty")
   
 

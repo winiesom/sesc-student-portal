@@ -13,7 +13,8 @@ import { Colors } from "../../assets/themes/colors"
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { register as signup } from '../../slices/auth'
+import { register as signup } from '../../slices/auth';
+import { libraryRegister, financeRegister } from '../../slices/external';
 import { clearMessage } from "../../slices/message";
 
 
@@ -22,11 +23,23 @@ import '../../styles/common.styles.css'
 
 
 const Register = () => {
+
+  const generateStudentId = (n) => {
+    let start_range = 10 ** (n - 1);
+    let end_range = 10 ** n - 1;
+    return Math.floor(Math.random() * (end_range - start_range + 1) + start_range);
+  }
+
+  // const [studentId, setStudentId] = useState(`c${generate_student_id(9)}`);
   const [loading, setLoading] = useState(false);
   const { message } = useSelector((state) => state.message);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+
+  const studentId = `c${generateStudentId(9)}`;
+  console.log(studentId, 'the student id generated outside submit function')
 
   // form validation rules
   const validationSchema = Yup.object().shape({
@@ -51,22 +64,51 @@ const Register = () => {
       const { first_name, last_name, username, email, password } = data;
       setLoading(true);
 
+
       const regData = {
         first_name,
         last_name,
         username,
         email,
+        password,
+        student_id: studentId
+      };
+
+      const librarySignupData = {
+        first_name,
+        last_name,
+        username,
+        email,
+        account_id: studentId,
+        role_id: 2,
         password
       };
 
+      const financeSignupData = {
+        first_name,
+        last_name,
+        username,
+        email,
+        student_id: studentId,
+        password,
+        outstanding: false
+      };
+
+      console.log(studentId, 'the student id generated inside submit function')
+
+
       dispatch(signup(regData))
+      dispatch(libraryRegister(librarySignupData))
+      dispatch(financeRegister(financeSignupData))
       .then((data) => {
         setLoading(false);
+        console.log(data, 'data in .then of react register component')
         if(data.payload !== undefined) {
           navigate("/")
         }
       })
-      .catch(() => {
+      .catch((error) => {
+        console.log(error, "error in .catch of react register component")
         setLoading(false);
       });
           setTimeout(() => {
@@ -77,7 +119,7 @@ const Register = () => {
 
 
   return (
-    <div className="main-container">
+    <div className="login-container">
     <Snackbars
       variant="error"
       message={message}
@@ -98,7 +140,6 @@ const Register = () => {
               helper={errors.first_name?.message}
               register={register}
               disabled={loading}
-              // onChange={(e) => setRegData({ ...regData, first_name: e.target.value })}
             />
           </Grid>
 
@@ -112,7 +153,6 @@ const Register = () => {
               helper={errors.last_name?.message}
               register={register}
               disabled={loading}
-              // onChange={(e) => setRegData({ ...regData, last_name: e.target.value })}
             />
           </Grid>
 
@@ -126,7 +166,6 @@ const Register = () => {
               helper={errors.username?.message}
               register={register}
               disabled={loading}
-              // onChange={(e) => setRegData({ ...regData, username: e.target.value })}
             />
           </Grid>
 
@@ -140,7 +179,6 @@ const Register = () => {
               helper={errors.email?.message}
               register={register}
               disabled={loading}
-              // onChange={(e) => setRegData({ ...regData, email: e.target.value })}
             />
           </Grid>
 
@@ -155,7 +193,6 @@ const Register = () => {
                 error={errors.password ? true : false}
                 helper={errors.password?.message}
                 disabled={loading}
-                // onChange={(e) => setRegData({ ...regData, password: e.target.value })}
             />
           </Grid>
 

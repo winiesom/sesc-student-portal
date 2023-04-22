@@ -95,7 +95,6 @@ const Login = () => {
               helper={errors.email?.message}
               register={register}
               disabled={loading}
-              // onChange={(e) => setRegData({ ...regData, email: e.target.value })}
             />
           </Grid>
 
@@ -110,7 +109,6 @@ const Login = () => {
                 error={errors.password ? true : false}
                 helper={errors.password?.message}
                 disabled={loading}
-                // onChange={(e) => setRegData({ ...regData, password: e.target.value })}
             />
           </Grid>
 
