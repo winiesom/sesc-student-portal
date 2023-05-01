@@ -111,7 +111,7 @@ const pages = ['Courses', 'Enrolments', 'Eligibility', 'Profile'];
 
 
 const Layout = () => {
-  const accessToken = Cookies.get("access");
+  const accessToken = Cookies.get("access_token");
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);

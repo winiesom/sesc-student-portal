@@ -19,10 +19,15 @@ export const profile = createAsyncThunk(
 
 export const updateProfile = createAsyncThunk(
     "profile/edit",
-    async (id, profileData, thunkAPI) => {
-      console.log(id, profileData, 'slices')
+    async ({ id, first_name, last_name, username, email }, thunkAPI) => {
       try {
-        const response = await ProfileService.editProfile(id, profileData);
+        const response = await ProfileService.editProfile(
+          id, 
+          first_name, 
+          last_name, 
+          username, 
+          email
+          );
         return response.data;
       } catch (error) {
         let message = error.response.data.detail || error.response.statusText;

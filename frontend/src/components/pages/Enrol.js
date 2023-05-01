@@ -16,7 +16,9 @@ import Snackbars from "../../assets/snackbar";
 import { CustomButton } from "../../assets/button"
 import { Colors } from "../../assets/themes/colors"
 
-import {courseEnrol} from "../../slices/enrolments"
+import {courseEnrol, getCourseEnrolments} from "../../slices/enrolments"
+import {courses as getCourses} from "../../slices/courses"
+import {generateInvoice} from "../../slices/external"
 import { clearMessage } from "../../slices/message";
 
 import "../../styles/courses.styles.css"
@@ -30,6 +32,7 @@ const Enrol = ({allowEnrol, row}) => {
     const [serverError, setServerError] = useState(false);
     const [success, setSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [invoiceDetails, setInvoiceDetails] = useState(null);
     const [enrolledState, setEnrolledState] = useState(false);
     const { message } = useSelector((state) => state.message);
     const { user } = useSelector((state) => state.auth);
@@ -49,36 +52,74 @@ const Enrol = ({allowEnrol, row}) => {
         }
     }, [allowEnrol, row.id])
 
-
-    const handleEnrol = (rowData) => {
-        setLoading(true);
-
-        const enrolData = {
-            "course_id": rowData.id,
-            "student_id": user.user_id
-        };
-
-        dispatch(courseEnrol({enrolData}))
-        .then((data) => {
-            setLoading(false);
-            if(data.payload !== undefined) {
-                setSuccess(true);
-                setOpen(false);
-            }
-        })
-        .catch(() => {
-            setLoading(false)
-            setServerError(true)
-        })
-        setTimeout(() => {
-            dispatch(clearMessage());
-          }, 3000);
-
-        return false
+    function generateUniqueReference() {
+      let data = '';
+      const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      const lettersLength = letters.length;
+      for (let i = 0; i < 7; i++) {
+          data += letters.charAt(Math.floor(Math.random() * lettersLength));
+      }
+  
+      // check if the string is unique
+      if (uniqueStrings.has(data)) {
+        // if not, generate a new string recursively
+        return generateUniqueReference();
+      } else {
+        // add the string to the set of unique strings
+        uniqueStrings.add(data);
+        return data;
+      }
     }
+    
+    // initialize an empty set to store unique strings
+    const uniqueStrings = new Set();
+    
+    // generate a unique string
+    const uniqueString = generateUniqueReference();
 
 
-  return (
+const handleEnrol = (rowData) => {
+  setLoading(true);
+  
+  const enrolData = {
+    "course_id": rowData.id,
+    "student_id": user.user_id
+  };
+
+  const invoiceData = {
+    "account_id": user && user.student_id,
+    "amount": rowData.fee,
+    "type": 1,
+    "reference": uniqueString,
+    "paid": false,
+    "book_id": null,
+    "course_id": rowData.id
+  }
+  
+  dispatch(generateInvoice({invoiceData}))
+  .then((data) => {
+    dispatch(courseEnrol({enrolData}))
+    // dispatch(getCourses({ page: 0, pagesize: 10, search: "" }));
+    setLoading(false);
+    setOpen(false)
+    if(data.payload !== undefined) {
+      setSuccess(true);
+      setInvoiceDetails(data.payload);
+      dispatch(getCourses({ page: 0, pagesize: 10, search: "" }));
+      dispatch(getCourseEnrolments())
+    }
+  })
+  .catch(() => {
+    setLoading(false);
+    setServerError(true);
+  })
+  setTimeout(() => {
+    dispatch(clearMessage());
+  }, 3000);
+  return false
+}
+
+return (
     <div>
       <MenuItem
         disableRipple
@@ -89,11 +130,19 @@ const Enrol = ({allowEnrol, row}) => {
           <ReadMoreIcon className="more-icon" />
         </ListItemIcon>
       </MenuItem>
-      <Snackbars
+      {/* <Snackbars
           variant="success"
           handleClose={handleSuccessClose}
           message="Enrolled Sucessfully"
           isOpen={success}
+        /> */}
+
+        <Snackbars
+          variant="success"
+          handleClose={handleSuccessClose}
+          message={invoiceDetails && invoiceDetails.data.reference !== null ? `An invoice with reference: ${invoiceDetails && invoiceDetails.data.reference} has been generated for you. please login to your finance portal and pay your enrolment fee` : "Enrolled successfully"}
+          isOpen={success}
+          autoHide={8000}
         />
 
       <Dialog
@@ -130,7 +179,7 @@ const Enrol = ({allowEnrol, row}) => {
           variant="error"
           handleClose={handleCloseSnack}
           message={message}
-          isOpen={(message !== undefined && message !== "") || (serverError)}
+          isOpen={message !== undefined && message !== ""}
         />
         
 
@@ -157,7 +206,7 @@ const Enrol = ({allowEnrol, row}) => {
              className="customBtn"
              endIcon={ <ReadMoreIcon />} 
              type="submit" 
-             disabled={loading || enrolledState}
+             disabled={loading || enrolledState || success}
              onClick={() => handleEnrol(row)}
             >
               {loading ? (

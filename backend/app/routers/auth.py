@@ -6,6 +6,13 @@ from ..import database, schemas, models, utils, oauth2
 
 router = APIRouter(tags=["Authentication"])
 
+
+# check if email exists in student table
+# if it doesnt exist, return 403 status code with message of invalid credentials
+# if it exists, verify password matches with password in db
+
+# if credentials match, create token and return response with token included
+
 @router.post("/login")
 async def login(student_credentials: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(database.get_db)):
 
@@ -19,5 +26,5 @@ async def login(student_credentials: OAuth2PasswordRequestForm = Depends(), db: 
 
     # create token, return token
     access_token = oauth2.create_access_token(data = {"student_id": student.id})
-    return {"access_token": access_token, "token_type": "bearer", "user_id": student.id, "first_name": student.first_name, "last_name": student.last_name}
+    return {"access_token": access_token, "token_type": "bearer", "user_id": student.id, "first_name": student.first_name, "last_name": student.last_name, "student_id": student.student_id}
     

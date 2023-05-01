@@ -102,7 +102,6 @@ const Register = () => {
       dispatch(financeRegister(financeSignupData))
       .then((data) => {
         setLoading(false);
-        console.log(data, 'data in .then of react register component')
         if(data.payload !== undefined) {
           navigate("/")
         }

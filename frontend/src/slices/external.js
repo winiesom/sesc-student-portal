@@ -34,11 +34,29 @@ export const financeRegister = createAsyncThunk(
   }
 );
 
+export const generateInvoice = createAsyncThunk(
+  "finance/invoice",
+  async ({invoiceData}, thunkAPI) => {
+    try {
+      const response = await ExternalService.generateAnInvoice(invoiceData);
+      return response.data;
+    } catch (error) {
+        console.log(error, 'slices invoice error')
+      let message;
+      
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
+
 
 
 const initialState = {
   librarySuccess: false,
-  financeSuccess: false
+  financeSuccess: false,
+  success: false,
+  invData: null
 };
 const externalSlice = createSlice({
   name: "external",
@@ -56,6 +74,14 @@ const externalSlice = createSlice({
     builder.addCase(financeRegister.rejected, (state, action) => {
         state.financeSuccess = false;
     });
+    builder.addCase(generateInvoice.fulfilled, (state, action) => {
+      state.success = true;
+      state.invData = action.payload;
+  });
+  builder.addCase(generateInvoice.rejected, (state, action) => {
+      state.success = false;
+      state.invData = null;
+  });
   },
 });
 

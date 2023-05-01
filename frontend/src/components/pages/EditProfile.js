@@ -21,7 +21,7 @@ import { CustomButton } from "../../assets/button"
 import { TextField } from "../../assets/textfields";
 import { Colors } from "../../assets/themes/colors"
 
-import { updateProfile } from "../../slices/profile"
+import { updateProfile, profile } from "../../slices/profile"
 import { clearMessage } from "../../slices/message";
 
 import "../../styles/profile.styles.css"
@@ -57,8 +57,7 @@ const EditProfile = ({profileInfo}) => {
   const {
     register,
     handleSubmit,
-    control,
-    watch,
+    reset,
     setValue,
     formState: { errors },
   } = useForm({
@@ -77,21 +76,16 @@ const EditProfile = ({profileInfo}) => {
 
       setLoading(true);
 
-      const profileData = {
-          first_name,
-          last_name,
-          username,
-          email
-      }
+      const id = profileInfo.id;
 
-      console.log(first_name, last_name, username, email, 'component')
-
-      dispatch(updateProfile(profileInfo.id, profileData))
+      dispatch(updateProfile({ id, first_name, last_name, username, email }))
       .then((data) => {
           setLoading(false);
           if(data.payload !== undefined) {
             setSuccess(true);
             setOpen(false);
+            dispatch(profile(id))
+            reset();
           }
       })
       .catch(() => {
@@ -212,7 +206,7 @@ const EditProfile = ({profileInfo}) => {
                 />
               </Grid>
 
-              <Grid item xs={12} className="form-grid">
+              {/* <Grid item xs={12} className="form-grid">
                 <TextField
                     id="email"
                     htmlFor="email"
@@ -224,7 +218,7 @@ const EditProfile = ({profileInfo}) => {
                     register={register}
                     disabled={loading}
                 />
-              </Grid>
+              </Grid> */}
         
 
             <Grid item xs={12} className="button-grid">

@@ -10,7 +10,7 @@ const Alert = forwardRef(function Alert(props, ref) {
 function SlideTransition(props) {
   return <Slide {...props} direction="down" timeout={300} />;
 }
-export default function Snackbars({ variant, handleClose, message, isOpen }) {
+export default function Snackbars({ variant, handleClose, message, isOpen, autoHide }) {
   return (
     <Box sx={{ width: "100%" }}>
       <Snackbar
@@ -19,7 +19,7 @@ export default function Snackbars({ variant, handleClose, message, isOpen }) {
           horizontal: "center",
         }}
         open={isOpen}
-        autoHideDuration={3000}
+        autoHideDuration={autoHide || 3000}
         onClose={handleClose}
         TransitionComponent={SlideTransition}
       >
