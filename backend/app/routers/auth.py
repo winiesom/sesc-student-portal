@@ -28,3 +28,8 @@ async def login(student_credentials: OAuth2PasswordRequestForm = Depends(), db: 
     access_token = oauth2.create_access_token(data = {"student_id": student.id})
     return {"access_token": access_token, "token_type": "bearer", "user_id": student.id, "first_name": student.first_name, "last_name": student.last_name, "student_id": student.student_id}
     
+
+@router.post("/logout")
+async def logout(response: Response):
+    response.delete_cookie(key="access_token")
+    return {"message": "Logged out successfully"}

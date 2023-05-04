@@ -7,11 +7,15 @@ const registerFinance = (financeSignupData) => axios.post("http://localhost:8083
 
 const generateAnInvoice = (invoiceData) => axios.post("http://localhost:8083/invoices", invoiceData);
 
+const getOutstanding = (account_id) => axios.get(`http://localhost:8083/accounts/${account_id}`);
+
+
 
 const externalService = {
     registerLibrary,
     registerFinance,
-    generateAnInvoice
+    generateAnInvoice,
+    getOutstanding
 };
 
 export default externalService;

@@ -30,7 +30,6 @@ const Register = () => {
     return Math.floor(Math.random() * (end_range - start_range + 1) + start_range);
   }
 
-  // const [studentId, setStudentId] = useState(`c${generate_student_id(9)}`);
   const [loading, setLoading] = useState(false);
   const { message } = useSelector((state) => state.message);
 
@@ -89,7 +88,7 @@ const Register = () => {
         last_name,
         username,
         email,
-        student_id: studentId,
+        account_id: studentId,
         password,
         outstanding: false
       };

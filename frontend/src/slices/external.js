@@ -10,7 +10,7 @@ export const libraryRegister = createAsyncThunk(
       return response.data;
     } catch (error) {
         console.log(error)
-      let message;
+      let message = error.response.data.message || error.response.statusText;
       
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue();
@@ -25,8 +25,7 @@ export const financeRegister = createAsyncThunk(
       const response = await ExternalService.registerFinance(financeSignupData);
       return response.data;
     } catch (error) {
-        console.log(error)
-      let message;
+      let message = error.response.data.message || error.response.statusText;
       
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue();
@@ -41,9 +40,23 @@ export const generateInvoice = createAsyncThunk(
       const response = await ExternalService.generateAnInvoice(invoiceData);
       return response.data;
     } catch (error) {
-        console.log(error, 'slices invoice error')
-      let message;
+      let message = error.response.data.message || error.response.statusText;
       
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
+
+export const getOutstanding = createAsyncThunk(
+  "accounts/getoutstanding",
+  async ({ account_id }, thunkAPI) => {
+    try {
+      const response = await ExternalService.getOutstanding(account_id);
+      return response.data
+    } catch (error) {
+      let message = error.response.data.message || error.response.statusText
+
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue();
     }
@@ -56,7 +69,9 @@ const initialState = {
   librarySuccess: false,
   financeSuccess: false,
   success: false,
-  invData: null
+  invData: null,
+  outstanding: null,
+  outstandingSuccess: false
 };
 const externalSlice = createSlice({
   name: "external",
@@ -81,6 +96,13 @@ const externalSlice = createSlice({
   builder.addCase(generateInvoice.rejected, (state, action) => {
       state.success = false;
       state.invData = null;
+  });
+    builder.addCase(getOutstanding.fulfilled, (state, action) => {
+      state.outstandingSuccess = true;
+      state.outstanding = action.payload;
+  });
+  builder.addCase(getOutstanding.rejected, (state, action) => {
+      state.outstandingSuccess = false;
   });
   },
 });

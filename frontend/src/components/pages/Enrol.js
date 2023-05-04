@@ -98,11 +98,11 @@ const handleEnrol = (rowData) => {
   
   dispatch(generateInvoice({invoiceData}))
   .then((data) => {
-    dispatch(courseEnrol({enrolData}))
     // dispatch(getCourses({ page: 0, pagesize: 10, search: "" }));
     setLoading(false);
     setOpen(false)
     if(data.payload !== undefined) {
+      dispatch(courseEnrol({enrolData}))
       setSuccess(true);
       setInvoiceDetails(data.payload);
       dispatch(getCourses({ page: 0, pagesize: 10, search: "" }));

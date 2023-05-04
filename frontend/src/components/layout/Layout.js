@@ -28,7 +28,7 @@ import {
   Logout as LogoutIcon
 } from '@mui/icons-material';
 
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import Courses from '../pages/Courses';
 import Enrolments from '../pages/Enrolments';
@@ -116,6 +116,11 @@ const Layout = () => {
   const [open, setOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
 
+  const handleLogout = () => {
+    Cookies.remove("access_token");
+    window.location.reload();
+  }
+
   const { isLoggedIn } = useSelector((state) => state.auth);
   useEffect(() => {
     if (!isLoggedIn) return Navigate("/");
@@ -129,6 +134,9 @@ const Layout = () => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+
+  
 
 
   return (
@@ -201,6 +209,7 @@ const Layout = () => {
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
                 }}
+                onClick={handleLogout}
               >
                 <ListItemIcon
                   sx={{
