@@ -130,12 +130,7 @@ return (
           <ReadMoreIcon className="more-icon" />
         </ListItemIcon>
       </MenuItem>
-      {/* <Snackbars
-          variant="success"
-          handleClose={handleSuccessClose}
-          message="Enrolled Sucessfully"
-          isOpen={success}
-        /> */}
+
 
         <Snackbars
           variant="success"
@@ -179,7 +174,7 @@ return (
           variant="error"
           handleClose={handleCloseSnack}
           message={message}
-          isOpen={message !== undefined && message !== ""}
+          isOpen={(message !== undefined && message !== "") || (serverError)}
         />
         
 

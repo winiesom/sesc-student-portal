@@ -1,19 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { Controller,useForm } from "react-hook-form";
-
+import { useForm } from "react-hook-form";
 import { ThreeDots } from "react-loader-spinner";
-
 import { useDispatch, useSelector } from "react-redux";
-
-import {
-    Dialog,
-    Fab,
-    Grid,
-    ListItemIcon,
-    MenuItem,
-  } from "@mui/material";
+import { Dialog, Fab, Grid } from "@mui/material";
 import { Edit as EditIcon, Close as CloseIcon, DownloadDone as DownloadDoneIcon } from '@mui/icons-material';
 
 import Snackbars from "../../assets/snackbar";
@@ -24,8 +15,8 @@ import { Colors } from "../../assets/themes/colors"
 import { updateProfile, profile } from "../../slices/profile"
 import { clearMessage } from "../../slices/message";
 
-import "../../styles/profile.styles.css"
-import "../../styles/common.styles.css"
+import "../../styles/profile.styles.css";
+import "../../styles/common.styles.css";
 
 
 

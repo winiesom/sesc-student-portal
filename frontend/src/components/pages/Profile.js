@@ -2,6 +2,9 @@ import React, {useState, useEffect} from 'react';
 import {Grid, Paper} from '@mui/material';
 
 import {useDispatch, useSelector} from "react-redux";
+import {PuffSpinner} from '../../assets/spinner';
+import {Colors} from '../../assets/themes/colors';
+import Snackbars from "../../assets/snackbar";
 
 import { profile } from "../../slices/profile"
 
@@ -20,6 +23,9 @@ const Profile = () => {
   const { data } = useSelector((state) => state.profile);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+
+  const handleCloseSnack = () => setServerError(false);
+  const handleSuccessClose = () => setServerSuccess(false);
 
 
   useEffect(() => {
@@ -40,6 +46,30 @@ const Profile = () => {
 
   return (
     <div className="main-container">
+       <Snackbars
+          variant="success"
+          handleClose={handleSuccessClose}
+          message="Sucessful"
+          isOpen={serverSuccess}
+        />
+         <Snackbars
+          variant="error"
+          handleClose={handleCloseSnack}
+          message={message}
+          isOpen={serverError}
+        />
+      { loading ? 
+    <Grid container spacing={0}>
+     <Grid item xs={12} className="table-tools-container-tab">
+     <PuffSpinner 
+     height={50} 
+     width={50} 
+     color={Colors.primary}
+     label='Loading...'
+     />
+   </Grid> 
+   </Grid>
+   : 
         <Paper className="profile-paper">
         <Grid container spacing={2}>
         <Grid item xs={10}>
@@ -76,6 +106,7 @@ const Profile = () => {
         <Grid item xs={2}><EditProfile profileInfo={data && data[0]} /></Grid>
         </Grid>
         </Paper>
+      }
     </div>
   );
 }

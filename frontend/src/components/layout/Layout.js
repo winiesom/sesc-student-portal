@@ -28,7 +28,7 @@ import {
   Logout as LogoutIcon
 } from '@mui/icons-material';
 
-import {useDispatch, useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import Courses from '../pages/Courses';
 import Enrolments from '../pages/Enrolments';

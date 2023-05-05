@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Grid, Paper, Box, Card, CardActions, CardContent, Button, Typography} from '@mui/material';
+import {Grid, Card, CardContent, Typography} from '@mui/material';
 
 import {PuffSpinner} from '../../assets/spinner';
 import {Colors} from '../../assets/themes/colors';
@@ -8,29 +8,14 @@ import TaskAltIcon from '@mui/icons-material/TaskAlt';
 
 import {useDispatch, useSelector} from "react-redux";
 
-import { getOutstanding } from "../../slices/external"
+import { getOutstanding } from "../../slices/external";
 
-import "../../styles/common.styles.css"
-import "../../styles/eligibility.styles.css"
-
-
-const bull = (
-  <Box
-    component="span"
-    sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
-  >
-    •
-  </Box>
-);
-
-
+import "../../styles/common.styles.css";
+import "../../styles/eligibility.styles.css";
 
 
 const Eligibility = () => {
   const [loading, setLoading] = useState(false);
-  const [serverError, setServerError] = useState(false);
-  const [serverSuccess, setServerSuccess] = useState(false);
-  const { message } = useSelector((state) => state.message);
   const { user } = useSelector((state) => state.auth);
 
   const { outstanding } = useSelector((state) => state.external);
@@ -44,14 +29,11 @@ const Eligibility = () => {
     .unwrap()
       .then(() => {
         setLoading(false);
-        setServerSuccess(true);
       })
       .catch(() => {
         setLoading(false);
-        setServerSuccess(false);
-        setServerError(true);
       });
-  }, [dispatch])
+  }, [dispatch, user])
 
 
   return (
