@@ -51,9 +51,6 @@ The application is written in Python and FastAPI.
     * When an account is created from the student service, a request is sent to this application to create an account.
 
 
-## Demos
-[![Watch the demo.](http://img.youtube.com/vi/6Z2XXVkB3gk/hqdefault.jpg)](https://youtu.be/6Z2XXVkB3gk)
-
 ## Running the application
     1. Ensure the Finance and Library portals are setup and running.
     2. Rename the `.env.example` file in the server root directory to `.env`
