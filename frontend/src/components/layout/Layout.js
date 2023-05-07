@@ -107,7 +107,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-const pages = ['Courses', 'Enrolments', 'Eligibility', 'Profile'];
+const pages = ['Courses', 'Enrolments', 'Graduation', 'Profile'];
 
 
 const Layout = () => {
@@ -183,7 +183,7 @@ const Layout = () => {
                   px: 2.5,
                 }}
                 component={Link}
-                to={text === "Courses" ? '/home/courses' : text === "Enrolments" ? '/home/enrolments' : text === "Eligibility" ? '/home/eligibility' : text === "Profile" ? '/home/profile' : ""}
+                to={text === "Courses" ? '/home/courses' : text === "Enrolments" ? '/home/enrolments' : text === "Graduation" ? '/home/eligibility' : text === "Profile" ? '/home/profile' : ""}
               >
                 <ListItemIcon
                   sx={{
@@ -192,7 +192,7 @@ const Layout = () => {
                     justifyContent: 'center',
                   }}
                 >
-                  {text === "Courses" ? <ViewModuleIcon /> : text === "Enrolments" ? <FactCheckIcon /> : text === "Eligibility" ? <SchoolIcon /> : text === "Profile" ? <AccountBoxIcon /> : ""}
+                  {text === "Courses" ? <ViewModuleIcon /> : text === "Enrolments" ? <FactCheckIcon /> : text === "Graduation" ? <SchoolIcon /> : text === "Profile" ? <AccountBoxIcon /> : ""}
                 </ListItemIcon>
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
