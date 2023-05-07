@@ -9,7 +9,6 @@ export const libraryRegister = createAsyncThunk(
       const response = await ExternalService.registerLibrary(librarySignupData);
       return response.data;
     } catch (error) {
-        console.log(error)
       let message = error.response.data.message || error.response.statusText;
       
       thunkAPI.dispatch(setMessage(message));

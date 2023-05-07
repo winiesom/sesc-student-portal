@@ -53,7 +53,6 @@ const Login = () => {
       };
     
       dispatch(login(loginData))
-      // console.log('haha')
         .then((data) => {
           setLoading(false);
           if (data.payload !== undefined) {

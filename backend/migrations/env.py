@@ -18,14 +18,6 @@ from app.database import SQLALCHEMY_DATABASE_URL
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../app')))
 from app.models import Base 
 
-# db_user = os.environ.get("DATABASE_USERNAME")
-# db_password = os.environ.get("DATABASE_PASSWORD")
-# db_host = os.environ.get("DATABASE_HOSTNAME")
-# db_port = os.environ.get("DATABASE_PORT")
-# db_name = os.environ.get("DATABASE_NAME")
-
-# DATABASE_URL = f"postgresql+psycopg2://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
-# print(DATABASE_URL, 'jajajaja')
 
 
 config = context.config

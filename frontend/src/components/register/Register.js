@@ -38,7 +38,6 @@ const Register = () => {
 
 
   const studentId = `c${generateStudentId(9)}`;
-  console.log(studentId, 'the student id generated outside submit function')
 
   // form validation rules
   const validationSchema = Yup.object().shape({
@@ -93,8 +92,6 @@ const Register = () => {
         outstanding: false
       };
 
-      console.log(studentId, 'the student id generated inside submit function')
-
 
       dispatch(signup(regData))
       dispatch(libraryRegister(librarySignupData))
@@ -106,7 +103,6 @@ const Register = () => {
         }
       })
       .catch((error) => {
-        console.log(error, "error in .catch of react register component")
         setLoading(false);
       });
           setTimeout(() => {
