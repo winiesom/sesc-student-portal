@@ -62,6 +62,10 @@ The application is written in Python and FastAPI.
     5. Run the command: `pip3 install -r requirements.txt` or `pip install -r requirements.txt`
     6. Run the app and db service using the command: `docker-compose up`
 
+## Note: You can access PGADMIN on the browser via: http://localhost:5050/browser/
+    provide PGADMIN_EMAIL and PGADMIN_PASSWORD with the details stored in `.env` file
+    Create server on PGADMIN
+
 
 
 
