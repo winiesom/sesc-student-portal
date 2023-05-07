@@ -66,6 +66,9 @@ The application is written in Python and FastAPI.
     provide PGADMIN_EMAIL and PGADMIN_PASSWORD with the details stored in `.env` file
     Create server on PGADMIN
 
+## Test using postman
+    `https://documenter.getpostman.com/view/8758683/2s93eYTrWb`
+
 
 
 
